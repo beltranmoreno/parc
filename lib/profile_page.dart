@@ -1,9 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:parc/valet_locations_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'customer_sessions_page.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key, required this.buildContext})
@@ -16,14 +12,6 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    getNavBarPreference();
-    super.initState();
-  }
-
   Widget greetingContainer(
       {required String name,
       required String memberStatus,
@@ -223,59 +211,39 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
-  void _NavBarNav(int index) {
-    if (index == 0) {
-      setIndex();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => UserValetLocation(
-                    buildContext: context,
-                  )));
-    } else if (index == 1) {
-      setIndex();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CustomerSessionPage(
-                    context: context,
-                  )));
-    } else if (index == 2) {
-      setIndex();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => UserProfilePage(
-                    buildContext: context,
-                  )));
-    }
-    setState(() {
-      _selectedIndex = index;
-    });
+  AppBar appBar(String? name) {
+    return AppBar(
+      backgroundColor: Color(0xffF7F4E9),
+      automaticallyImplyLeading: false,
+      elevation: 0.0,
+      //backgroundColor: myTheme!.getBGColor(),Text("Hello"),
+      centerTitle: false,
+      leadingWidth: 15,
+      title: Text(
+        "Hello, $name",
+        style: const TextStyle(
+          fontSize: 32,
+          color: Color(0xff294B56),
+          fontFamily: 'Mate',
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: EdgeInsets.only(right: 20),
+          child: GestureDetector(
+              onTap: () {},
+              child: Icon(CupertinoIcons.person,
+                  size: 42, color: Color(0xff294B56))),
+        )
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF7F4E9),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xffF7F4E9),
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.location_solid), label: "Locations"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.directions_car_rounded), label: "Session"),
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.person), label: "Profile")
-        ],
-        selectedItemColor: Color(0xff66867B),
-        unselectedItemColor: Color(0xffE8C0B5),
-        iconSize: 32,
-        selectedFontSize: 16,
-        unselectedFontSize: 14,
-        currentIndex: 2,
-        onTap: _NavBarNav,
-      ),
+      appBar: appBar("John"),
       body: SafeArea(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           SizedBox(
@@ -289,20 +257,5 @@ class _UserProfilePageState extends State<UserProfilePage> {
         ]),
       ),
     );
-  }
-
-  Future<void> saveNavBarPreference(int index) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("index", index);
-  }
-
-  Future<void> getNavBarPreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.getInt("index");
-  }
-
-  void setIndex() {
-    int index = _selectedIndex;
-    saveNavBarPreference(index);
   }
 }

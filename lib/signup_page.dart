@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:parc/customer_sessions_page.dart';
 import 'package:parc/theme/custom_theme.dart';
 
@@ -118,6 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Form(
         key: _formKey,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -159,11 +161,14 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             Padding(padding: EdgeInsets.all(12)),
             TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                   border: OutlineInputBorder(), hintText: "Phone Number"),
               validator: (value) {
-                if (value == null || value.isEmpty) return "Please enter text.";
+                if (value == null || value.isEmpty)
+                  return "Please enter only numbers.";
                 return null;
               },
             ),

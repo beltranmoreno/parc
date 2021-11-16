@@ -70,16 +70,16 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
         //padding: EdgeInsets.all(10),
         margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
         height: 176,
-        //padding: EdgeInsets.all(),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: Color(0xff66867B),
         ),
-        child: OutlinedButton(
-          style: ButtonStyle(
+        child: InkWell(
+          /*style: ButtonStyle(
             padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                 EdgeInsets.all(10)),
-          ),
+          ),*/
           child: Container(
             alignment: Alignment.center,
             padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
@@ -169,7 +169,7 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
               ],
             ),
           ),
-          onPressed: () {
+          onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -188,16 +188,16 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
         //padding: EdgeInsets.all(10),
         margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
         height: 176,
-        //padding: EdgeInsets.all(),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: Color(0xff294B56),
         ),
-        child: OutlinedButton(
-          style: ButtonStyle(
+        child: InkWell(
+          /*style: ButtonStyle(
             padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                 EdgeInsets.all(10)),
-          ),
+          ),*/
           child: Container(
             alignment: Alignment.center,
             padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
@@ -287,7 +287,7 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
               ],
             ),
           ),
-          onPressed: () {
+          onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -420,7 +420,7 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
             ),
           ),
         ]),
-        bottomNavigationBar: BottomNavigationBar(
+        /*bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Color(0xffF7F4E9),
           items: [
             BottomNavigationBarItem(
@@ -439,7 +439,7 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
           showUnselectedLabels: false,
           currentIndex: 1,
           onTap: _NavBarNav,
-        ),
+        ),*/
       ),
     );
   }

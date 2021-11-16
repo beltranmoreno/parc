@@ -73,6 +73,7 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
               ],
             )
           ]),
+          Padding(padding: EdgeInsets.all(5)),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -109,7 +110,7 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
 
   Widget ratesList() {
     return Container(
-      margin: EdgeInsets.all(10),
+      //margin: EdgeInsets.all(0),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15), color: Color(0xffffffff)),
@@ -130,7 +131,7 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
 
   Widget addTipContainer(double tip) {
     return Container(
-      padding: EdgeInsets.fromLTRB(30, 10, 35, 10),
+      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
       child: Column(
         children: [
           Row(
@@ -152,6 +153,71 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  void showiOSMessageAlert(
+      {required String title,
+      required String message,
+      required String cancel,
+      required String action}) {
+    showCupertinoDialog<void>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: Text(title), // 'Have any questions?'
+              content: Text(message), // 'Message $name'
+              actions: <CupertinoDialogAction>[
+                CupertinoDialogAction(
+                  child: Text(cancel),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text(action),
+                  onPressed: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => UserCheckoutPage(
+                    //               sessionID: sessionID,
+                    //             )));
+                  },
+                )
+              ],
+            ));
+  }
+
+  Widget checkOutButton() {
+    return Container(
+      // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 20),
+      width: 360,
+      height: 64,
+      child: ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Color(0xff294B56)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+              //side: BorderSide(color: Colors.red)
+            ))),
+        child: Text(
+          "checkout",
+          style: TextStyle(
+            color: Color(0xffE8C0B5),
+            fontSize: 24,
+          ),
+        ),
+        onPressed: () {
+          showiOSMessageAlert(
+              title: "Are you sure?",
+              message: "Tap confirm to request car.",
+              cancel: "Cancel",
+              action: "Confirm");
+        },
       ),
     );
   }
@@ -203,21 +269,25 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                sessionTime(sessionTime: "2:07"),
-              ],
-            ),
-            receiptContainer(receiptID: "322231"),
-            orderSummaryContainer(rate1: "he", rate2: "he"),
-            addTipContainer(3),
-          ],
-        ),
+        child: ListView(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  sessionTime(sessionTime: "2:07"),
+                ],
+              ),
+              receiptContainer(receiptID: "322231"),
+              orderSummaryContainer(rate1: "he", rate2: "he"),
+              addTipContainer(3),
+              checkOutButton(),
+              Padding(padding: EdgeInsets.all(40))
+            ],
+          ),
+        ]),
       ),
     );
   }

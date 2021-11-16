@@ -32,10 +32,10 @@ class _UserSessionPageState extends State<UserSessionPage> {
     if (type == "location") {
       return Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.all(5),
-          //height: 140,
-          //width: 176,
-          padding: EdgeInsets.all(5),
+          margin: EdgeInsets.all(10),
+          height: 140,
+          width: 160,
+          //padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Color(0xffFFFDF4),
@@ -54,7 +54,7 @@ class _UserSessionPageState extends State<UserSessionPage> {
                     style: TextStyle(fontSize: 24, fontFamily: "Open Sans"),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   Text(
                     "Miami Beach",
@@ -69,8 +69,8 @@ class _UserSessionPageState extends State<UserSessionPage> {
           alignment: Alignment.center,
           margin: EdgeInsets.all(10),
           height: 140,
-          width: 176,
-          //padding: EdgeInsets.all(),
+          width: 160,
+          //padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Color(0xffFFFDF4),
@@ -99,9 +99,9 @@ class _UserSessionPageState extends State<UserSessionPage> {
       return Container(
           alignment: Alignment.center,
           margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
+          //padding: EdgeInsets.all(10),
           height: 86,
-          width: 176,
+          width: 160,
           //padding: EdgeInsets.all(),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -137,9 +137,9 @@ class _UserSessionPageState extends State<UserSessionPage> {
       return Container(
           alignment: Alignment.center,
           margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
+          //padding: EdgeInsets.all(10),
           height: 86,
-          width: 176,
+          width: 160,
           //padding: EdgeInsets.all(),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
@@ -163,25 +163,27 @@ class _UserSessionPageState extends State<UserSessionPage> {
     required ValetPersonInfo valet,
   }) {
     return Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.all(20),
+      // alignment: Alignment.center,
+      margin: EdgeInsets.all(10),
       //width: 375,
       //height: 72,
+      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
       decoration: BoxDecoration(
           color: Color(0xffFFFDF4), borderRadius: BorderRadius.circular(16)),
+
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             children: [
-              Container(
-                //width: 20,
-                //height: 20,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xdddddd),
-                ),
-              ),
+              /*Container(
+                    width: 20,
+                    //height: 20,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xdddddd),
+                    ),
+                  ),*/
               Icon(
                 CupertinoIcons.person,
                 size: 32,
@@ -193,7 +195,9 @@ class _UserSessionPageState extends State<UserSessionPage> {
               )
             ],
           ),
+          Padding(padding: EdgeInsets.fromLTRB(40, 10, 40, 0)),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(
                 width: 48,
@@ -299,20 +303,13 @@ class _UserSessionPageState extends State<UserSessionPage> {
       {required String name, required String image, required String label}) {
     return Container(
       margin: EdgeInsets.all(10),
-      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-      alignment: Alignment.center,
-      width: 400, //375
-      height: 110, // 72
-      decoration: BoxDecoration(
-          //color: Color(0xffdddddd),
-          borderRadius: BorderRadius.circular(16)),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              SizedBox(width: 15),
+              SizedBox(height: 20, width: 10),
               Text("Valet"),
             ],
           ),
@@ -325,31 +322,32 @@ class _UserSessionPageState extends State<UserSessionPage> {
     );
   }
 
-  Widget requestCarButton() {
+  Widget checkOutButton() {
     return Container(
       // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-      width: 375,
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 20),
+      width: 360,
       height: 64,
       child: ElevatedButton(
         style: ButtonStyle(
             backgroundColor:
-                MaterialStateProperty.all<Color>(Color(0xffE8C0B5)),
+                MaterialStateProperty.all<Color>(Color(0xff294B56)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.0),
               //side: BorderSide(color: Colors.red)
             ))),
         child: Text(
-          "request car",
+          "checkout",
           style: TextStyle(
-            color: Color(0xff294B56),
+            color: Color(0xffE8C0B5),
             fontSize: 24,
           ),
         ),
         onPressed: () {
           showiOSMessageAlert(
-              title: "Are you sure?",
-              message: "Tap confirm to request your car from the valet.",
+              title: "Proceed to checkout?",
+              message: "Tap confirm to proceed.",
               cancel: "Cancel",
               action: "Confirm");
         },
@@ -368,61 +366,63 @@ class _UserSessionPageState extends State<UserSessionPage> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(children: [
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Icon(
-                    CupertinoIcons.car_detailed,
-                    size: 56,
-                  ),
-                  Text(
-                    widget.carName,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontFamily: 'Montserrat',
+        child: ListView(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(children: [
+                    SizedBox(
+                      height: 40,
                     ),
-                  ),
-                  Text(
-                    widget.license,
-                    style: TextStyle(fontSize: 16, color: Color(0xff66867B)),
-                  )
-                ])
-              ],
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                getInfoTile(type: "location"),
-                getInfoTile(type: "time")
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                getInfoTile(type: "checkin"),
-                getInfoTile(type: "estimate")
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                valetDriverContainer(
-                    name: "Andy F.", image: "0", label: "Valet")
-              ],
-            ),
-            requestCarButton(),
-          ],
-        ),
+                    Icon(
+                      CupertinoIcons.car_detailed,
+                      size: 56,
+                    ),
+                    Text(
+                      widget.carName,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: 'Montserrat',
+                      ),
+                    ),
+                    Text(
+                      widget.license,
+                      style: TextStyle(fontSize: 16, color: Color(0xff66867B)),
+                    )
+                  ])
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getInfoTile(type: "location"),
+                  getInfoTile(type: "time")
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getInfoTile(type: "checkin"),
+                  getInfoTile(type: "estimate")
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  valetDriverContainer(
+                      name: "Andy F.", image: "0", label: "Valet")
+                ],
+              ),
+              checkOutButton(),
+            ],
+          ),
+        ]),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xffFFFDF4),
