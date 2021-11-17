@@ -220,7 +220,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       centerTitle: false,
       leadingWidth: 15,
       title: Text(
-        "Hello, $name",
+        " Hello, $name",
         style: const TextStyle(
           fontSize: 32,
           color: Color(0xff294B56),
@@ -246,11 +246,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
       appBar: appBar("John"),
       body: SafeArea(
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          SizedBox(
-            height: 40,
-          ),
-          greetingContainer(
-              name: "John", memberStatus: "Platinum Member", image: "jpg"),
+          Padding(padding: EdgeInsets.only(top: 10)),
+          //greetingContainer(
+          //name: "John", memberStatus: "Platinum Member", image: "jpg"),
           //userCarCard(name: "Audi", license: "HSD 569", image: "image"),
           userCarsContainer(),
           userAccountMenu(),

@@ -43,7 +43,9 @@ class _UserHomeState extends State<UserHome> {
                 activeIcon: Icon(Icons.directions_car_filled_rounded),
                 label: "Session"),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person), label: "Profile")
+                icon: Icon(CupertinoIcons.person),
+                activeIcon: Icon(CupertinoIcons.person_solid),
+                label: "Profile")
           ],
           selectedItemColor: Color(0xff66867B),
           unselectedItemColor: Color(0xffE8C0B5),

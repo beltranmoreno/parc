@@ -11,6 +11,10 @@ class UserCheckoutPage extends StatefulWidget {
 
 class _UserCheckoutPageState extends State<UserCheckoutPage> {
   double tip = 0;
+  double rate1 = 0;
+  double rate2 = 0;
+  double taxFees = 0;
+  double total = 0;
 
   void incrementTip() {
     setState(() {
@@ -109,6 +113,7 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
   }
 
   Widget ratesList() {
+    total = rate1 + rate2 + taxFees + tip;
     return Container(
       //margin: EdgeInsets.all(0),
       padding: EdgeInsets.all(10),
@@ -117,13 +122,23 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
       child: Column(
         children: [
           individualRate(
-              rateDescription: "0 - 2 hours", time: "2:00", price: "4.50"),
+              rateDescription: "0 - 2 hours",
+              time: "2:00",
+              price: rate1.toStringAsFixed(2)),
           individualRate(
-              rateDescription: "2 - 4 hours", time: "0:45", price: "0.75"),
+              rateDescription: "2 - 4 hours",
+              time: "0:45",
+              price: rate2.toStringAsFixed(2)),
           individualRate(
-              rateDescription: "Tax and Fees", time: "", price: "1.10"),
-          individualRate(rateDescription: "Tip", time: "", price: "2.00"),
-          individualRate(rateDescription: "Total", time: "", price: "10.00")
+              rateDescription: "Tax and Fees",
+              time: "",
+              price: taxFees.toStringAsFixed(2)),
+          individualRate(
+              rateDescription: "Tip", time: "", price: tip.toStringAsFixed(2)),
+          individualRate(
+              rateDescription: "Total",
+              time: "",
+              price: total.toStringAsFixed(2))
         ],
       ),
     );
@@ -205,7 +220,7 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
               //side: BorderSide(color: Colors.red)
             ))),
         child: Text(
-          "checkout",
+          "pay",
           style: TextStyle(
             color: Color(0xffE8C0B5),
             fontSize: 24,

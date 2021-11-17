@@ -23,7 +23,7 @@ class UserSessionPage extends StatefulWidget {
 }
 
 class _UserSessionPageState extends State<UserSessionPage> {
-  String estimatePrice = "3.50";
+  String estimatePrice = "4.50";
   String sectionOfDay = "PM";
   String checkInTime = "12:34";
   String sessionID = '11143';
@@ -424,7 +424,7 @@ class _UserSessionPageState extends State<UserSessionPage> {
           ),
         ]),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      /*bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xffFFFDF4),
         items: [
           BottomNavigationBarItem(
@@ -441,7 +441,7 @@ class _UserSessionPageState extends State<UserSessionPage> {
         unselectedFontSize: 14,
         currentIndex: 1,
         //  onTap: (),
-      ),
+      ),*/
     );
   }
 }
