@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:parc/assets/style.dart';
+import 'package:parc/customer_new_session.dart';
 import 'package:parc/data/data_objects.dart';
 import 'package:parc/profile_page.dart';
 import 'package:parc/valet_locations_page.dart';
@@ -373,6 +374,22 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
 
           centerTitle: false,
           leadingWidth: 15,
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewSessionPage(
+                                  buildContext: context,
+                                )));
+                  },
+                  child: Icon(CupertinoIcons.add,
+                      size: 24, color: Color(0xff294B56))),
+            ),
+          ],
         ),
         body: TabBarView(children: [
           SafeArea(

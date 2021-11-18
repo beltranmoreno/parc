@@ -5,8 +5,8 @@ class UserSession {
   double sessionID;
   String checkInTime = '0:00';
   UserCar userCar = UserCar(carName: "placeName", license: "placeLicense");
-  LocationInfo location =
-      LocationInfo(name: "placeName", expLocation: "placeLocation");
+  LocationInfo location = LocationInfo(
+      name: "placeName", expLocation: "placeLocation", locNumber: 12345);
 
   UserSession({required this.name, required this.sessionID});
   setCarInfo({required String c_name, required String c_license}) {
@@ -77,10 +77,12 @@ class ValetPersonInfo {
 class LocationInfo {
   String name;
   String expLocation;
+  int locNumber;
   double latitute = 0;
   double longitude = 0;
 
-  LocationInfo({required this.name, required this.expLocation});
+  LocationInfo(
+      {required this.name, required this.expLocation, required this.locNumber});
   setLatLon({required double lat, required double lon}) {
     latitute = lat;
     longitude = lon;
