@@ -12,7 +12,7 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   PageController pageController = PageController();
 
   void onTapped(int index) {

@@ -1,13 +1,17 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:parc/customer_sessions_page.dart';
 import 'package:parc/theme/custom_theme.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+import 'firebase/fire_auth.dart';
 
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key, required this.buildContext}) : super(key: key);
+
+  final BuildContext buildContext;
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -15,7 +19,10 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   String _chosenType = "Customer";
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
+  final phoneController = TextEditingController();
   final pass1Controller = TextEditingController();
   final pass2Controller = TextEditingController();
   late String email;
@@ -123,6 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: firstNameController,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
                   border: OutlineInputBorder(), hintText: "First Name"),
@@ -134,6 +142,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Padding(padding: EdgeInsets.all(12)),
             TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: lastNameController,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(
                   border: OutlineInputBorder(), hintText: "Last Name"),
@@ -162,6 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Padding(padding: EdgeInsets.all(12)),
             TextFormField(
               keyboardType: TextInputType.number,
+              controller: phoneController,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
@@ -276,6 +286,11 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        foregroundColor: Color(0xff294B56),
+        backgroundColor: Color(0xffF7F4E9),
+      ),
       backgroundColor: Color(0xffF7F4E9),
       body: SafeArea(
         child: ListView(
@@ -286,19 +301,17 @@ class _SignUpPageState extends State<SignUpPage> {
               children: [
                 Container(
                     //decoration: BoxDecoration(color: Color(0xff66867B)),
-                    margin: EdgeInsets.all(30),
-                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.only(bottom: 20),
                     child: Text(
-                      "parc",
+                      "Welcome.",
                       style: TextStyle(
-                          fontSize: 64,
+                          fontSize: 32,
                           fontFamily: "Nunito",
                           color: Color(0xff294B56)),
                     )),
               ],
             ),
             signUpForm(),
-            Padding(padding: EdgeInsets.all(20)),
             ElevatedButton(
                 style: ButtonStyle(
                   textStyle: MaterialStateProperty.resolveWith<TextStyle>(
@@ -316,20 +329,28 @@ class _SignUpPageState extends State<SignUpPage> {
                         borderRadius: BorderRadius.circular(20));
                   }),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    User? user = await FireAuth.registerUsingEmailPassword(
+                      firstName: firstNameController.text,
+                      lastName: lastNameController.text,
+                      email: emailController.text,
+                      password: pass2Controller.text,
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Processing")));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CustomerSessionPage(
-                                  context: context,
-                                )));
+                    if (user != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CustomerSessionPage(
+                                    context: context,
+                                  )));
+                    }
                   }
                 },
                 child: Text(
-                  "continue",
+                  "sign up",
                   style: CustomTheme().mainFont,
                 )),
           ],
