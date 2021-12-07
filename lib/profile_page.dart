@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parc/theme/custom_theme.dart';
+
+import 'login_signup.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key, required this.buildContext})
@@ -239,6 +243,37 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
+  Widget destroyButton({required String type}) {
+    return ElevatedButton(
+        style: ButtonStyle(
+          textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+              (states) => TextStyle(fontSize: 24, fontFamily: 'Montserrat')),
+          padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
+              (states) => EdgeInsets.all(20)),
+          foregroundColor: MaterialStateProperty.resolveWith<Color>(
+              (states) => Color(0xffE8C0B5)),
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+              (states) => Color(0xff294B56)),
+          shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
+            return RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20));
+          }),
+        ),
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginSignUp()));
+        },
+        child: Row(
+          children: [
+            Text(
+              type,
+              style: CustomTheme().mainFont,
+            ),
+          ],
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -252,6 +287,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           //userCarCard(name: "Audi", license: "HSD 569", image: "image"),
           userCarsContainer(),
           userAccountMenu(),
+          destroyButton(type: 'sign out'),
         ]),
       ),
     );

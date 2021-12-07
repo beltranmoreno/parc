@@ -5,15 +5,16 @@ import 'package:parc/profile_page.dart';
 import 'package:parc/valet_locations_page.dart';
 
 class UserHome extends StatefulWidget {
-  const UserHome({Key? key}) : super(key: key);
+  const UserHome({Key? key, required this.buildContext}) : super(key: key);
 
+  final BuildContext buildContext;
   @override
   _UserHomeState createState() => _UserHomeState();
 }
 
 class _UserHomeState extends State<UserHome> {
   int _selectedIndex = 1;
-  PageController pageController = PageController();
+  PageController pageController = PageController(initialPage: 1);
 
   void onTapped(int index) {
     setState(() {
@@ -26,11 +27,14 @@ class _UserHomeState extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PageView(controller: pageController, children: [
-          UserValetLocation(buildContext: context),
-          CustomerSessionPage(context: context),
-          UserProfilePage(buildContext: context),
-        ]),
+        body: PageView(
+            controller: pageController,
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              UserValetLocation(buildContext: context),
+              CustomerSessionPage(context: context),
+              UserProfilePage(buildContext: context),
+            ]),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Color(0xffF7F4E9),
           items: const [
