@@ -244,34 +244,38 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Widget destroyButton({required String type}) {
-    return ElevatedButton(
-        style: ButtonStyle(
-          textStyle: MaterialStateProperty.resolveWith<TextStyle>(
-              (states) => TextStyle(fontSize: 24, fontFamily: 'Montserrat')),
-          padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
-              (states) => EdgeInsets.all(20)),
-          foregroundColor: MaterialStateProperty.resolveWith<Color>(
-              (states) => Color(0xffE8C0B5)),
-          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (states) => Color(0xff294B56)),
-          shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
-            return RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20));
-          }),
-        ),
-        onPressed: () async {
-          await FirebaseAuth.instance.signOut();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginSignUp()));
-        },
-        child: Row(
-          children: [
-            Text(
-              type,
-              style: CustomTheme().mainFont,
-            ),
-          ],
-        ));
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: ElevatedButton(
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+                (states) => TextStyle(fontSize: 24, fontFamily: 'Montserrat')),
+            padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
+                (states) => EdgeInsets.all(20)),
+            foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) => Color(0xffE8C0B5)),
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) => Color(0xff294B56)),
+            shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
+              return RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20));
+            }),
+          ),
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginSignUp()));
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                type,
+                style: CustomTheme().mainFont,
+              ),
+            ],
+          )),
+    );
   }
 
   @override

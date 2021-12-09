@@ -72,6 +72,7 @@ class _UserValetLocationState extends State<UserValetLocation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Locations"),
         backgroundColor: Color(0xff66867B),
       ),
