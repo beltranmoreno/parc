@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parc/add_car_page.dart';
 import 'package:parc/theme/custom_theme.dart';
 
 import 'login_signup.dart';
@@ -77,57 +79,158 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Widget userCarsContainer() {
-    return Container(
-      margin: EdgeInsets.all(20),
-      /*decoration: BoxDecoration(
+    String userID = FirebaseAuth.instance.currentUser!.uid;
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .collection('cars')
+            .doc('1')
+            .snapshots(),
+        builder: (context, snapshot) {
+          var userDocument = snapshot.data as DocumentSnapshot;
+          return Container(
+            margin: EdgeInsets.all(20),
+            /*decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Color(0xffFFFfdd),
       ),*/
-      //height: 250,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 10),
-                      Text(
-                        "My Cars",
-                        style: TextStyle(fontSize: 24),
-                      )
-                    ],
-                  ),
-                ],
+            //height: 250,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(width: 10),
+                            Text(
+                              "My Cars",
+                              style: TextStyle(fontSize: 24),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                            icon: Icon(CupertinoIcons.add),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddCar(
+                                            buildContext: context,
+                                          )));
+                            }),
+                        SizedBox(
+                          width: 60,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                userCarCard(
+                    name: userDocument['carName'],
+                    license: userDocument['license'],
+                    image: "0"),
+              ],
+            ),
+          );
+        });
+  }
+
+  Future getCarData({required String uid}) async {
+    QuerySnapshot qs = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('cars')
+        .get();
+    return qs.docs;
+  }
+
+  Widget userCarsFuture() {
+    String userID = FirebaseAuth.instance.currentUser!.uid;
+    return FutureBuilder(
+        future: getCarData(uid: userID),
+        builder: (_, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
+            return Container(
+              margin: EdgeInsets.all(20),
+              child: Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(width: 10),
+                                Text(
+                                  "My Cars",
+                                  style: TextStyle(fontSize: 24),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            IconButton(
+                                icon: Icon(CupertinoIcons.add),
+                                iconSize: 24,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddCar(
+                                                buildContext: context,
+                                              )));
+                                }),
+                            SizedBox(
+                              width: 60,
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) {
+                        return userCarCard(
+                            name: snapshot.data[index]['carName'],
+                            license: snapshot.data[index]['license'],
+                            image: "0");
+                      },
+                      itemCount: snapshot.data!.length,
+                    ),
+                  ],
+                ),
               ),
-              Column(
-                children: [
-                  Icon(CupertinoIcons.add),
-                  SizedBox(
-                    width: 60,
-                  )
-                ],
-              )
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          userCarCard(name: "Audi", license: "HSD 569", image: "0"),
-          SizedBox(height: 10),
-          userCarCard(name: "Ferrari", license: "GDF 889", image: "1")
-        ],
-      ),
-    );
+            );
+          }
+        });
   }
 
   Widget userCarCard(
       {required String name, required String license, required String image}) {
     return Container(
       height: 80,
-      //margin: EdgeInsets.all(20),
+      margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.all(20),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -243,7 +346,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
-  Widget destroyButton({required String type}) {
+  Widget destroyButton(
+      {required String type, required Color fore, required Color back}) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: ElevatedButton(
@@ -253,18 +357,28 @@ class _UserProfilePageState extends State<UserProfilePage> {
             padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
                 (states) => EdgeInsets.all(20)),
             foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                (states) => Color(0xffE8C0B5)),
+                (states) => fore), // Color(0xffE8C0B5)
             backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (states) => Color(0xff294B56)),
+                (states) => back), // Color(0xff294B56)
             shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
               return RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20));
             }),
           ),
           onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginSignUp()));
+            if (type == 'sign out') {
+              await FirebaseAuth.instance.signOut();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginSignUp()));
+            } else if (type == 'delete account') {
+              String userID = FirebaseAuth.instance.currentUser!.uid;
+              var docUser = FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(userID)
+                  .delete();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginSignUp()));
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -278,22 +392,55 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
+  Future<void> _getUserName() async {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc((FirebaseAuth.instance.currentUser!.uid))
+        .get()
+        .then((value) {
+      setState(() {});
+    });
+  }
+
+  void initState() {
+    super.initState();
+    _getUserName();
+  }
+
+  final firestore = FirebaseFirestore.instance; //
+  FirebaseAuth auth = FirebaseAuth
+      .instance; //recommend declaring a reference outside the methods
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xffF7F4E9),
-      appBar: appBar("John"),
-      body: SafeArea(
-        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Padding(padding: EdgeInsets.only(top: 10)),
-          //greetingContainer(
-          //name: "John", memberStatus: "Platinum Member", image: "jpg"),
-          //userCarCard(name: "Audi", license: "HSD 569", image: "image"),
-          userCarsContainer(),
-          userAccountMenu(),
-          destroyButton(type: 'sign out'),
-        ]),
-      ),
-    );
+    String userID = FirebaseAuth.instance.currentUser!.uid;
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .snapshots(),
+        builder: (context, snapshot) {
+          var userDocument = snapshot.data as DocumentSnapshot;
+          return Scaffold(
+            backgroundColor: Color(0xffF7F4E9),
+            appBar: appBar(userDocument['firstName']),
+            body: SafeArea(
+              child: ListView(children: [
+                Padding(padding: EdgeInsets.only(top: 10)),
+                //userCarsContainer(),
+                userCarsFuture(),
+                userAccountMenu(),
+                destroyButton(
+                    type: 'sign out',
+                    fore: Color(0xffE8C0B5),
+                    back: Color(0xff294B56)),
+                destroyButton(
+                    type: 'delete account',
+                    fore: Color(0xff294B56),
+                    back: Color(0xffE8C0B5))
+              ]),
+            ),
+          );
+        });
   }
 }

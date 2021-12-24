@@ -39,47 +39,51 @@ class _LoginSignUpState extends State<LoginSignUp> {
     return firebaseApp;
   }
 
-  Widget actionButton({required String type}) {
-    return ElevatedButton(
-        style: ButtonStyle(
-          textStyle: MaterialStateProperty.resolveWith<TextStyle>(
-              (states) => TextStyle(fontSize: 24, fontFamily: 'Montserrat')),
-          padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
-              (states) => EdgeInsets.all(20)),
-          foregroundColor: MaterialStateProperty.resolveWith<Color>(
-              (states) => Color(0xffE8C0B5)),
-          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (states) => Color(0xff294B56)),
-          shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
-            return RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20));
-          }),
-        ),
-        onPressed: () async {
-          if (type == 'sign up') {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SignUpPage(
-                          buildContext: context,
-                        )));
-          } else if (type == 'log in') {
-            User? user = await FireAuth.signInUsingEmailPassword(
-                email: _emailController.text, password: _passController.text);
-            if (user != null) {
+  Widget actionButton(
+      {required String type, required Color fore, required Color back}) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.15,
+      child: ElevatedButton(
+          style: ButtonStyle(
+            textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+                (states) => TextStyle(fontSize: 24, fontFamily: 'Montserrat')),
+            padding: MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
+                (states) => EdgeInsets.all(20)),
+            foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) => fore), // Color(0xffE8C0B5)
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                (states) => back), // Color(0xff294B56)
+            shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
+              return RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20));
+            }),
+          ),
+          onPressed: () async {
+            if (type == 'sign up') {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => UserHome(
+                      builder: (context) => SignUpPage(
                             buildContext: context,
                           )));
+            } else if (type == 'log in') {
+              User? user = await FireAuth.signInUsingEmailPassword(
+                  email: _emailController.text, password: _passController.text);
+              if (user != null) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserHome(
+                              buildContext: context,
+                            )));
+              }
             }
-          }
-        },
-        child: Text(
-          type,
-          style: CustomTheme().mainFont,
-        ));
+          },
+          child: Text(
+            type,
+            style: CustomTheme().mainFont,
+          )),
+    );
   }
 
   @override
@@ -93,6 +97,7 @@ class _LoginSignUpState extends State<LoginSignUp> {
                 child: ListView(
                   padding: EdgeInsets.all(20),
                   children: [
+                    Padding(padding: EdgeInsets.only(bottom: 40)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -105,10 +110,24 @@ class _LoginSignUpState extends State<LoginSignUp> {
                         ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.all(20)),
+                    Padding(padding: EdgeInsets.only(bottom: 40)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Valet made easy.",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontFamily: "Nunito",
+                              color: Color(0xff294B56)),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 70)),
                     TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: _emailController,
+                      autofocus: true,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), hintText: "Email"),
                       validator: (value) {
@@ -146,21 +165,42 @@ class _LoginSignUpState extends State<LoginSignUp> {
                               })),
                       validator: (value) {
                         if (value == null || value.isEmpty)
-                          return "Please enter text.";
+                          return "Please enter password.";
                         return null;
                       },
                     ),
-                    Padding(padding: EdgeInsets.all(10)),
+                    Padding(padding: EdgeInsets.only(bottom: 50)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [actionButton(type: 'log in')],
+                      children: [
+                        actionButton(
+                            type: 'log in',
+                            fore: Color(0xffE8C0B5),
+                            back: Color(0xff294B56))
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(20),
-                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 70)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [actionButton(type: 'sign up')],
+                      children: [
+                        Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontFamily: "Nunito",
+                              color: Color(0xff294B56)),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 25)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        actionButton(
+                            type: 'sign up',
+                            fore: Color(0xff294B56),
+                            back: Color(0xffE8C0B5))
+                      ],
                     ),
                   ],
                 ),

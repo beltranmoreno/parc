@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:parc/customer_sessions_page.dart';
+import 'package:parc/add_car_page.dart';
+import 'package:parc/data/user.dart';
+import 'package:parc/firebase/firestore.dart';
 import 'package:parc/theme/custom_theme.dart';
 
 import 'firebase/fire_auth.dart';
@@ -321,9 +323,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       MaterialStateProperty.resolveWith<EdgeInsetsGeometry>(
                           (states) => EdgeInsets.all(20)),
                   foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (states) => Color(0xffE8C0B5)),
+                      (states) => Color(0xff294B56)), // Color(0xff294B56)
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (states) => Color(0xff294B56)),
+                      (states) => Color(0xffE8C0B5)), // Color(0xffE8C0B5)
                   shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
                     return RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20));
@@ -337,20 +339,29 @@ class _SignUpPageState extends State<SignUpPage> {
                       email: emailController.text,
                       password: pass2Controller.text,
                     );
+                    UserFire newUser = UserFire(
+                        userID: FirebaseAuth.instance.currentUser!.uid,
+                        email: emailController.text,
+                        phoneNumber: phoneController.text,
+                        firstName: firstNameController.text,
+                        lastName: lastNameController.text,
+                        valet: _lights);
+                    await FireStore(uid: FirebaseAuth.instance.currentUser!.uid)
+                        .addUser(user: newUser);
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Processing")));
                     if (user != null) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CustomerSessionPage(
-                                    context: context,
+                              builder: (context) => AddCar(
+                                    buildContext: context,
                                   )));
                     }
                   }
                 },
                 child: Text(
-                  "sign up",
+                  "continue",
                   style: CustomTheme().mainFont,
                 )),
           ],
@@ -359,28 +370,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-
-/*String _validatePassword(String pass1) {
-    // 1
-    RegExp hasUpper = RegExp(r'[A-Z]');
-    RegExp hasLower = RegExp(r'[a-z]');
-    RegExp hasDigit = RegExp(r'\d');
-    RegExp hasPunct = RegExp(r'[!@#\$&*~-]');
-    // 2
-    if (!RegExp(r'.{8,}').hasMatch(pass1))
-      return 'Passwords must have at least 8 characters';
-    // 3
-    if (!hasUpper.hasMatch(pass1))
-      return 'Passwords must have at least one uppercase character';
-    // 4
-    if (!hasLower.hasMatch(pass1))
-      return 'Passwords must have at least one lowercase character';
-    // 5
-    if (!hasDigit.hasMatch(pass1))
-      return 'Passwords must have at least one number';
-    // 6
-    if (!hasPunct.hasMatch(pass1))
-      return 'Passwords need at least one special character like !@#\$&*~-';
-    // 7
-    return null;
-  }*/

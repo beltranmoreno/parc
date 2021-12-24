@@ -1,30 +1,18 @@
 import 'dart:core';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:parc/data/car.dart';
-
-class User {
+class UserFire {
   String userID;
   String email;
+  String phoneNumber;
   String firstName;
   String lastName;
-  Timestamp accountCreated;
-  Car car;
+  bool valet;
 
-  User(
+  UserFire(
       {required this.userID,
       required this.email,
+      required this.phoneNumber,
       required this.firstName,
       required this.lastName,
-      required this.accountCreated,
-      required this.car});
-
-  User.fromDocumentSnapshot({required DocumentSnapshot doc}) {
-    userID = doc.get(userID);
-    email = doc.data('email');
-    accountCreated = doc.data['accountCreated'];
-    firstName = doc.data['firstName'];
-    lastName = doc.data['lastName'];
-    car = doc.data['car'];
-  }
+      required this.valet});
 }

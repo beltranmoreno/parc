@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parc/car_on_way.dart';
 
 class UserCheckoutPage extends StatefulWidget {
   UserCheckoutPage({Key? key, required this.sessionID}) : super(key: key);
@@ -192,12 +193,12 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
                 CupertinoDialogAction(
                   child: Text(action),
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => UserCheckoutPage(
-                    //               sessionID: sessionID,
-                    //             )));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CarOnWay(
+                                  buildContext: context,
+                                )));
                   },
                 )
               ],
