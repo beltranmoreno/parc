@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:parc/car_on_way.dart';
+import 'package:parc/assets/button.dart';
+import 'package:parc/theme/colors.dart';
 
 class UserCheckoutPage extends StatefulWidget {
   UserCheckoutPage({Key? key, required this.sessionID}) : super(key: key);
@@ -173,71 +174,6 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
     );
   }
 
-  void showiOSMessageAlert(
-      {required String title,
-      required String message,
-      required String cancel,
-      required String action}) {
-    showCupertinoDialog<void>(
-        context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-              title: Text(title), // 'Have any questions?'
-              content: Text(message), // 'Message $name'
-              actions: <CupertinoDialogAction>[
-                CupertinoDialogAction(
-                  child: Text(cancel),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: Text(action),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CarOnWay(
-                                  buildContext: context,
-                                )));
-                  },
-                )
-              ],
-            ));
-  }
-
-  Widget checkOutButton() {
-    return Container(
-      // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-      margin: EdgeInsets.fromLTRB(20, 5, 20, 20),
-      width: 360,
-      height: 64,
-      child: ElevatedButton(
-        style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Color(0xff294B56)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-              //side: BorderSide(color: Colors.red)
-            ))),
-        child: Text(
-          "pay",
-          style: TextStyle(
-            color: Color(0xffE8C0B5),
-            fontSize: 24,
-          ),
-        ),
-        onPressed: () {
-          showiOSMessageAlert(
-              title: "Are you sure?",
-              message: "Tap confirm to request car.",
-              cancel: "Cancel",
-              action: "Confirm");
-        },
-      ),
-    );
-  }
-
   Widget addTip() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -299,8 +235,12 @@ class _UserCheckoutPageState extends State<UserCheckoutPage> {
               receiptContainer(receiptID: "322231"),
               orderSummaryContainer(rate1: "he", rate2: "he"),
               addTipContainer(3),
-              checkOutButton(),
-              Padding(padding: EdgeInsets.all(40))
+              PrimaryButton(
+                  buildContext: context,
+                  title: "pay",
+                  fore: pink,
+                  back: darkGreen),
+              const Padding(padding: EdgeInsets.all(40))
             ],
           ),
         ]),

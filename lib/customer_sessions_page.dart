@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parc/assets/button.dart';
 import 'package:parc/assets/style.dart';
 import 'package:parc/customer_new_session.dart';
 import 'package:parc/data/data_objects.dart';
 import 'package:parc/profile_page.dart';
+import 'package:parc/theme/colors.dart';
 import 'package:parc/valet_locations_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -113,7 +115,7 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
                                 style: TextStyle(
                                     fontFamily: "Montserrat",
                                     fontSize: 24,
-                                    color: Color(0xffFFFDF4)),
+                                    color: Color(0xfffffdf4)),
                               ),
                             ],
                           ),
@@ -344,7 +346,7 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Color(0xffF7F4E9),
+        backgroundColor: pale,
         appBar: AppBar(
           bottom: TabBar(
               indicatorWeight: 5,
@@ -410,7 +412,12 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
                     sessionTime: "3:27",
                     location: "Hotel Duval",
                     carName: "M4",
-                    license: "FHS 897")
+                    license: "FHS 897"),
+                PrimaryButton(
+                    buildContext: context,
+                    title: "hello",
+                    fore: darkGreen,
+                    back: pink)
               ],
             ),
           ),
@@ -437,26 +444,6 @@ class _CustomerSessionPageState extends State<CustomerSessionPage> {
             ),
           ),
         ]),
-        /*bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color(0xffF7F4E9),
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.location_solid), label: "Locations"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.directions_car_rounded), label: "Session"),
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person), label: "Profile")
-          ],
-          selectedItemColor: Color(0xff66867B),
-          unselectedItemColor: Color(0xffE8C0B5),
-          iconSize: 32,
-          selectedFontSize: 16,
-          unselectedFontSize: 14,
-          // type: BottomNavigationBarType.shifting,
-          showUnselectedLabels: false,
-          currentIndex: 1,
-          onTap: _NavBarNav,
-        ),*/
       ),
     );
   }

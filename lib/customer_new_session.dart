@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:parc/assets/button.dart';
 import 'package:parc/firebase/firestore.dart';
+import 'package:parc/theme/colors.dart';
 
 class NewSessionPage extends StatefulWidget {
   const NewSessionPage({Key? key, required this.buildContext})
@@ -272,6 +274,8 @@ class _NewSessionPageState extends State<NewSessionPage> {
           userCarsFuture(),
           Padding(padding: EdgeInsets.only(top: 30)),
           CTAButtonFuture(loc),
+          PrimaryButton(
+              buildContext: context, title: "nice", fore: pink, back: darkGreen)
         ]),
       )),
     );
